@@ -8,7 +8,7 @@ NPM
     
 ### Code
 ```javascript
-    import ObjectStorage from './src';
+    import ObjectStorage from 'softlayer-object-storage';
     import fs from 'fs';
     
     const conf = {
@@ -23,8 +23,18 @@ NPM
     const backupsContainer = new ObjectStorage(conf);
     const readStream = fs.createReadStream('./mysql.sql.gz');
 
+    // create new containers 'test-container'
+    backupsContainer.createContainer('test-container')
+    .then(console.log)
+    .catch(console.error);
+    
     // show all containers in your account
     backupsContainer.listContainers()
+    .then(console.log)
+    .catch(console.error);
+    
+    // remove container, (you can remove only empty container)
+    backupsContainer.removeContainer('test-container')
     .then(console.log)
     .catch(console.error);
     

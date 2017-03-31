@@ -17,18 +17,39 @@ class ObjectStorage {
     };
   }
 
-  createContainer(containerName) {
+  createContainer(name) {
     return new Promise((resolve, reject) => {
       request.get(this.token, (err, res) => {
-        request.post({
-          url: `${JSON.parse(res.body).storage[this.storage]}/${containerName}`,
+        if (err) reject(err);
+        request.put({
+          url: `${JSON.parse(res.body).storage[this.storage]}/${name}`,
           headers: { 'X-Auth-Token': res.headers['x-auth-token'] },
-        }, (error, body) => {
+        }, (error, resp) => {
           if (error) reject(error);
-          resolve(body);
+          resolve(resp);
         });
       });
     });
+  }
+
+  removeContainer(name) {
+    if (this.removeAccess) {
+      return new Promise((resolve, reject) => {
+        request.get(this.token, (err, res) => {
+          if (err) reject(err);
+          const containerName = name.split('/')[0] ? name.split('/').reverse()[0] : name;
+          request.delete({
+            url: `${JSON.parse(res.body).storage[this.storage]}/${containerName}`,
+            headers: { 'X-Auth-Token': res.headers['x-auth-token'] },
+          }, (error) => {
+            if (error) reject({ error, done: true });
+            resolve({ done: true });
+          });
+        });
+      });
+    } else {
+      return Promise.resolve('remove not allowed, set { removeAccess: true } to allow');
+    }
   }
 
   listContainers() {
