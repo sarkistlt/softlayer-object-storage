@@ -46,6 +46,7 @@ NPM
     // upload 'mysql.sql.gz' from local to OS
     // if you are passing stream from spawn (with no name)
     // you can pass the name as second argument 'backupsContainer.uploadFile(readStream, name)'
+    // or you can even pass just path 'backupsContainer.uploadFile('./mysql.sql.gz')'
     backupsContainer.uploadFile(readStream)
     .then(console.log)
     .catch(console.error);
