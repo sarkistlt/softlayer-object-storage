@@ -141,4 +141,4 @@ class ObjectStorage {
   }
 }
 
-export default ObjectStorage;
+module.exports = ObjectStorage;
