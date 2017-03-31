@@ -1,6 +1,6 @@
 {
   "name": "softlayer-object-storage",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "Set of helpers to work with the softLayer Object Storage.",
   "main": "lib/index.js",
   "scripts": {

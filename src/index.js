@@ -1,5 +1,5 @@
-import request from 'request';
-import fs from 'fs';
+const request = require('request');
+const fs = require('fs');
 
 class ObjectStorage {
   constructor(config) {
@@ -104,7 +104,10 @@ class ObjectStorage {
           headers: { 'X-Auth-Token': res.headers['x-auth-token'] },
         });
         readStream.pipe(writeStream);
+        readStream.on('end', resolve);
         readStream.on('exit', resolve);
+        readStream.on('data', resolve);
+        readStream.on('close', resolve);
       });
     });
   }
