@@ -44,7 +44,7 @@ NPM
     .catch(console.error);
     
     // upload 'mysql.sql.gz' from local to OS
-    // if you passing just string assume from spawn, you can pass the name as second argument 'backupsContainer.uploadFile(readStream, name)'
+    // if you are passing just string assume from spawn, you can pass the name as second argument 'backupsContainer.uploadFile(readStream, name)'
     backupsContainer.uploadFile(readStream)
     .then(console.log)
     .catch(console.error);
