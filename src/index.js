@@ -92,9 +92,9 @@ class ObjectStorage {
     });
   }
 
-  uploadFile(readStream) {
+  uploadFile(readStream, name) {
     return new Promise((resolve, reject) => {
-      const filename = readStream.path.split('/').reverse()[0];
+      const filename = name || readStream.path.split('/').reverse()[0];
       request.get(this.token, (err, res) => {
         if (err) reject(err);
         const writeStream = request.put({
