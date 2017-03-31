@@ -95,7 +95,6 @@ class ObjectStorage {
 
   uploadFile(file, name) {
     const readStream = typeof file === 'string' ? fs.createReadStream(file) : file;
-    console.log(readStream);
     return new Promise((resolve, reject) => {
       const filename = name || readStream.path.split('/').reverse()[0];
       request.get(this.token, (err, res) => {
