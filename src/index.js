@@ -109,6 +109,7 @@ class ObjectStorage {
         };
         const writeStream = request.put(token);
         readStream.pipe(writeStream);
+        readStream.on('error', error => reject(error));
         readStream.on('close', () => resolve(token.url));
       });
     });
