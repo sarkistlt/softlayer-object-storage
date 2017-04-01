@@ -22,12 +22,13 @@ class ObjectStorage {
     return new Promise((resolve, reject) => {
       request.get(this.token, (err, res) => {
         if (err) reject(err);
-        request.put({
+        const token = {
           url: `${JSON.parse(res.body).storage[this.storage]}/${name}`,
           headers: { 'X-Auth-Token': res.headers['x-auth-token'] },
-        }, (error, resp) => {
+        };
+        request.put(token, (error) => {
           if (error) reject(error);
-          resolve(resp);
+          resolve(token.url);
         });
       });
     });
@@ -39,10 +40,11 @@ class ObjectStorage {
         request.get(this.token, (err, res) => {
           if (err) reject(err);
           const containerName = name.split('/')[0] ? name.split('/').reverse()[0] : name;
-          request.delete({
+          const token = {
             url: `${JSON.parse(res.body).storage[this.storage]}/${containerName}`,
             headers: { 'X-Auth-Token': res.headers['x-auth-token'] },
-          }, (error) => {
+          };
+          request.delete(token, (error) => {
             if (error) reject({ error, done: true });
             resolve({ done: true });
           });
@@ -56,10 +58,11 @@ class ObjectStorage {
   listContainers() {
     return new Promise((resolve, reject) => {
       request.get(this.token, (err, res) => {
-        request.get({
+        const token = {
           url: `${JSON.parse(res.body).storage[this.storage]}`,
           headers: { 'X-Auth-Token': res.headers['x-auth-token'] },
-        }, (error, { body }) => {
+        };
+        request.get(token, (error, { body }) => {
           if (error) reject(error);
           const list = [];
           body.split('\n').forEach((name) => {
@@ -76,10 +79,11 @@ class ObjectStorage {
   listFiles() {
     return new Promise((resolve, reject) => {
       request.get(this.token, (err, res) => {
-        request.get({
+        const token = {
           url: `${JSON.parse(res.body).storage[this.storage]}/${this.container}`,
           headers: { 'X-Auth-Token': res.headers['x-auth-token'] },
-        }, (error, { body }) => {
+        };
+        request.get(token, (error, { body }) => {
           if (error) reject(error);
           const list = [];
           body.split('\n').forEach((name) => {
@@ -99,15 +103,13 @@ class ObjectStorage {
       const filename = name || readStream.path.split('/').reverse()[0];
       request.get(this.token, (err, res) => {
         if (err) reject(err);
-        const writeStream = request.put({
+        const token = {
           url: `${JSON.parse(res.body).storage[this.storage]}/${this.container}/${filename}`,
           headers: { 'X-Auth-Token': res.headers['x-auth-token'] },
-        });
+        };
+        const writeStream = request.put(token);
         readStream.pipe(writeStream);
-        readStream.on('end', resolve);
-        readStream.on('exit', resolve);
-        readStream.on('data', resolve);
-        readStream.on('close', resolve);
+        readStream.on('data', () => resolve(token.url));
       });
     });
   }
