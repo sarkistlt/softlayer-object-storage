@@ -122,7 +122,7 @@ class ObjectStorage {
           if (err) reject(err);
           if (Array.isArray(files)) {
             files.forEach((file, idx) => {
-              const filename = file.split('/')[0] ? file.split('/').reverse()[0] : file;
+              const filename = file.split('/')[0] ? file.split('/').splice(file.split('/').indexOf(this.container) + 1).join('/') : file;
               request.delete({
                 url: `${JSON.parse(res.body).storage[this.storage]}/${this.container}/${filename}`,
                 headers: { 'X-Auth-Token': res.headers['x-auth-token'] },
