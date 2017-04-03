@@ -137,7 +137,7 @@ class ObjectStorage {
               });
             });
           } else {
-            const filename = files.split('/')[0] ? files.split('/').reverse()[0] : files;
+            const filename = files.split('/')[0] ? files.split('/').splice(files.split('/').indexOf(this.container) + 1).join('/') : files;
             request.delete({
               url: `${JSON.parse(res.body).storage[this.storage]}/${this.container}/${filename}`,
               headers: { 'X-Auth-Token': res.headers['x-auth-token'] },
