@@ -39,6 +39,7 @@ NPM
     .catch(console.error);
     
     // show full url to all files in 'backups' container
+    // show full url to all files in folder 'public' of 'backups' container: backupsContainer.listFiles('/public')
     backupsContainer.listFiles()
     .then(console.log)
     .catch(console.error);

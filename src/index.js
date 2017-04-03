@@ -76,7 +76,7 @@ class ObjectStorage {
     });
   }
 
-  listFiles() {
+  listFiles(path) {
     return new Promise((resolve, reject) => {
       request.get(this.token, (err, res) => {
         const token = {
@@ -88,7 +88,12 @@ class ObjectStorage {
           const list = [];
           body.split('\n').forEach((name) => {
             if (name) {
-              list.push(`${JSON.parse(res.body).storage[this.storage]}/${this.container}/${name}`);
+              const url = `${JSON.parse(res.body).storage[this.storage]}/${this.container}/${name}`;
+              if (path) {
+                if (~url.indexOf(`${this.container}${path}`)) list.push(url);
+              } else {
+                list.push(url);
+              }
             }
           });
           resolve(list);
