@@ -30,7 +30,13 @@ class ObjectStorage {
         request.put(token, (error) => {
           if (error) return reject(error);
           resolve(token.url);
+        }).on('error', (e) => {
+          console.log(`request.put error ${e.code} reconnecting`);
+          return this.createContainer(name);
         });
+      }).on('error', (e) => {
+        console.log(`request.get error ${e.code} reconnecting`);
+        return this.createContainer(name);
       });
     });
   }
@@ -48,7 +54,13 @@ class ObjectStorage {
           request.delete(token, (error) => {
             if (error) reject({ error, done: true });
             resolve({ done: true });
+          }).on('error', (e) => {
+            console.log(`request.delete error ${e.code} reconnecting`);
+            return this.removeContainer(name);
           });
+        }).on('error', (e) => {
+          console.log(`request.get error ${e.code} reconnecting`);
+          return this.removeContainer(name);
         });
       });
     }
@@ -71,7 +83,13 @@ class ObjectStorage {
             }
           });
           resolve(list);
+        }).on('error', (e) => {
+          console.log(`request.get error ${e.code} reconnecting`);
+          return this.listContainers();
         });
+      }).on('error', (e) => {
+        console.log(`request.get error ${e.code} reconnecting`);
+        return this.listContainers();
       });
     });
   }
@@ -97,7 +115,13 @@ class ObjectStorage {
             }
           });
           resolve(list);
+        }).on('error', (e) => {
+          console.log(`request.get error ${e.code} reconnecting`);
+          return this.listFiles(path);
         });
+      }).on('error', (e) => {
+        console.log(`request.get error ${e.code} reconnecting`);
+        return this.listFiles(path);
       });
     });
   }
@@ -134,7 +158,10 @@ class ObjectStorage {
           url: `${JSON.parse(res.body).storage[this.storage]}/${container || this.container}/${filename}`,
           headers: { 'X-Auth-Token': res.headers['x-auth-token'] },
         };
-        const writeStream = request.put(token);
+        const writeStream = request.put(token).on('error', (e) => {
+          console.log(`request.put error ${e.code} reconnecting`);
+          return this.uploadFile(file, name, container, cb);
+        });
         readStream.pipe(writeStream);
         readStream.on('error', (error) => {
           if (cb) return cb();
@@ -144,6 +171,9 @@ class ObjectStorage {
           if (cb) return cb();
           resolve(token.url);
         });
+      }).on('error', (e) => {
+        console.log(`request.get error ${e.code} reconnecting`);
+        return this.uploadFile(file, name, container, cb);
       });
     });
   }
