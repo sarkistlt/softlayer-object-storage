@@ -114,7 +114,7 @@ class ObjectStorage {
         const filePath = `${root}/${stat.name}`;
         const fileName = filePath.split('/').reverse()[0];
         const containerPath = filePath.replace(rootFolder, '').replace(fileName, '').slice(0, -1);
-        if (exclude.find(name => name !== fileName)) {
+        if (!exclude || exclude.find(name => name !== fileName)) {
           console.log(filePath);
           this.uploadFile(filePath, false, `${this.container}${containerPath}`, next);
         } else {

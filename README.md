@@ -53,6 +53,7 @@ NPM
     .catch(console.error);
     
     // you can upload directory with nested folders
+    // in second argument you can pass files name which you want to exclude 'backupsContainer.uploadDir('../public', ['.DS_Store'])'
     backupsContainer.uploadDir('../public')
     .then(console.log)
     .catch(console.error);
