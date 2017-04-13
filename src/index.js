@@ -102,26 +102,30 @@ class ObjectStorage {
     });
   }
 
-  uploadFile(file, name, container, cb) {
-    const isFolder = typeof file === 'string' && fs.lstatSync(file).isDirectory();
-
+  uploadDir(dir, exclude) {
     return new Promise((resolve, reject) => {
-      if (isFolder) {
-        const rootFolder = file;
-        const walker = walk.walk(rootFolder, { followLinks: false });
+      const rootFolder = dir;
+      const walker = walk.walk(rootFolder, { followLinks: false });
 
-        walker.on('end', () => resolve('done'));
-        walker.on('error', reject);
+      walker.on('end', () => resolve('done'));
+      walker.on('error', reject);
 
-        return walker.on('file', (root, stat, next) => {
-          const filePath = `${root}/${stat.name}`;
-          const fileName = filePath.split('/').reverse()[0];
-          const containerPath = filePath.replace(rootFolder, '').replace(fileName, '').slice(0, -1);
+      return walker.on('file', (root, stat, next) => {
+        const filePath = `${root}/${stat.name}`;
+        const fileName = filePath.split('/').reverse()[0];
+        const containerPath = filePath.replace(rootFolder, '').replace(fileName, '').slice(0, -1);
+        if (exclude.find(name => name !== fileName)) {
           console.log(filePath);
           this.uploadFile(filePath, false, `${this.container}${containerPath}`, next);
-        });
-      }
+        } else {
+          next();
+        }
+      });
+    });
+  }
 
+  uploadFile(file, name, container, cb) {
+    return new Promise((resolve, reject) => {
       const readStream = typeof file === 'string' ? fs.createReadStream(file) : file;
       const filename = name || readStream.path.split('/').reverse()[0];
       request.get(this.token, (err, res) => {
