@@ -1,6 +1,6 @@
 {
   "name": "softlayer-object-storage",
-  "version": "1.0.15",
+  "version": "1.0.16",
   "description": "Set of helpers to work with the softLayer Object Storage.",
   "main": "lib/index.js",
   "scripts": {
@@ -12,7 +12,12 @@
     "url": "https://github.com/sarkistlt/softlayer-object-storage.git"
   },
   "keywords": [
-    "softlayer"
+    "softlayer",
+    "swift",
+    "os",
+    "object storage",
+    "ibm",
+    "objectStorage"
   ],
   "author": {
     "name": "Sarkis Arutiunian (sarkis.tlt@gmail.com)"
