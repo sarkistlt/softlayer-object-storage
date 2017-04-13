@@ -48,6 +48,7 @@ NPM
     // if you are passing stream from spawn (with no name)
     // you can pass the name as second argument 'backupsContainer.uploadFile(readStream, name)'
     // or you can even just pass the path 'backupsContainer.uploadFile('./mysql.sql.gz')'
+    // u can pass path to the directory and it will upload directory with the same structure 'backupsContainer.uploadFile('./public')'
     backupsContainer.uploadFile(readStream)
     .then(console.log)
     .catch(console.error);

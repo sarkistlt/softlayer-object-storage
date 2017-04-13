@@ -1,6 +1,6 @@
 {
   "name": "softlayer-object-storage",
-  "version": "1.0.16",
+  "version": "1.0.17",
   "description": "Set of helpers to work with the softLayer Object Storage.",
   "main": "lib/index.js",
   "scripts": {
@@ -51,6 +51,7 @@
     "webpack": "^2.3.2"
   },
   "dependencies": {
-    "request": "^2.81.0"
+    "request": "^2.81.0",
+    "walk": "^2.3.9"
   }
 }
