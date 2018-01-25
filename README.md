@@ -12,6 +12,7 @@ NPM
     import fs from 'fs';
     
     const conf = {
+      timeout: 1000 * 60 * 10, // optional
       removeAccess: true, // allow remove objects from container [default false]
       storage: 'public', // public or private
       endpoint: 'https://***.objectstorage.softlayer.net/auth/v1.0',

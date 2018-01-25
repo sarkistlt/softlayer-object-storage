@@ -17,6 +17,10 @@ class ObjectStorage {
         'X-Auth-User': this.username,
       },
     };
+
+    if (config.timeout) {
+      this.token.timeout = config.timeout;
+    }
   }
 
   createContainer(name) {
