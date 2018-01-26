@@ -12,7 +12,7 @@ NPM
     import fs from 'fs';
     
     const conf = {
-      timeout: 1000 * 60 * 10, // optional
+      timeout: 1000 * 60 * 10, // connection timeout [optional]
       removeAccess: true, // allow remove objects from container [default false]
       storage: 'public', // public or private
       endpoint: 'https://***.objectstorage.softlayer.net/auth/v1.0',
@@ -47,15 +47,9 @@ NPM
     
     // upload 'mysql.sql.gz' from local to OS
     // if you are passing stream from spawn (with no name)
-    // you can pass the name as second argument 'backupsContainer.uploadFile(readStream, name)'
+    // 'backupsContainer.uploadFile(readStream, { name: 'custom file name', container, headers: 'object to extent put headers' })'
     // or you can even just pass the path 'backupsContainer.uploadFile('./mysql.sql.gz')'
     backupsContainer.uploadFile(readStream)
-    .then(console.log)
-    .catch(console.error);
-    
-    // you can upload directory with nested folders
-    // in second argument you can pass files name which you want to exclude 'backupsContainer.uploadDir('../public', ['.DS_Store'])'
-    backupsContainer.uploadDir('../public')
     .then(console.log)
     .catch(console.error);
     
